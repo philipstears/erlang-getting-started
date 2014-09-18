@@ -31,6 +31,9 @@ fridge2(FoodList) ->
             ok
     end.
 
+start() ->
+    spawn(?MODULE, fridge2, [[]]).
+
 store(Pid, Food) ->
     Pid ! {self(), {store, Food}},
     receive 
