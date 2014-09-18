@@ -22,11 +22,23 @@ fridge2(FoodList) ->
             NewFoodList = lists:delete(Food, FoodList),
             TookSomething = NewFoodList /= FoodList,
             Return = case TookSomething of
-                         true -> ok;
+                         true -> {ok, Food};
                          false -> not_found
                      end,
             From ! {self(), Return},
             fridge2(NewFoodList);
         terminate ->
             ok
+    end.
+
+store(Pid, Food) ->
+    Pid ! {self(), {store, Food}},
+    receive 
+        {_, Msg} -> Msg
+    end.
+
+take(Pid, Food) -> 
+    Pid ! {self(), {take, Food}},
+    receive
+        {_, Msg} -> Msg
     end.
