@@ -38,10 +38,14 @@ store(Pid, Food) ->
     Pid ! {self(), {store, Food}},
     receive 
         {_, Msg} -> Msg
+    after 2000 ->
+        timeout
     end.
 
 take(Pid, Food) -> 
     Pid ! {self(), {take, Food}},
     receive
         {_, Msg} -> Msg
+    after 2000 ->
+        timeout
     end.
